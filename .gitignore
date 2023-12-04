@@ -1,0 +1,6 @@
+# Non-version controlled yaml-files
+Assignment02-kubeconfig.yaml
+mongodb-config.yaml
+
+# Executables
+*.exe
