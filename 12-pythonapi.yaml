@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: assignment02
+  name: pythonapi
+  labels:
+    app: pythonapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pythonapi
+  template:
+    metadata:
+      labels:
+        app: pythonapi
+    spec:
+      containers:
+        - name: pythonapi
+          image: git.systementor.se/andreas.eliasson/urbanlegends-pythonapi
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: pythonapi-config
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  namespace: assignment02
+  name: pythonapi-service
+  annotations:
+    service.beta.kubernetes.io/linode-loadbalancer-throttle: "4"
+  labels:
+    app: pythonapi
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: pythonapi
+  sessionAffinity: None
