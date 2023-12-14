@@ -20,6 +20,9 @@ spec:
           image: git.systementor.se/andreas.eliasson/urbanlegends-pythonapi
           ports:
             - containerPort: 8000
+          env:
+            - name: ENVIRONMENT
+              value: production
           envFrom:
             - configMapRef:
                 name: pythonapi-config
