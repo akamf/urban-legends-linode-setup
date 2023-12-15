@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: assignment02
+  name: flaskserver
+  labels:
+    app: flaskserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flaskserver
+  template:
+    metadata:
+      labels:
+        app: flaskserver
+    spec:
+      containers:
+        - name: flaskserver
+          image: git.systementor.se/andreas.eliasson/urbanlegends-flasksite
+          ports:
+            - containerPort: 5000
+          env:
+            - name: GOAPI_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-production-config # Change this to flask-development-config in development env
+                  key: goapi-endpoint
+            - name: PYTHONAPI_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-production-config # Change this to flask-development-config in development env
+                  key: pythonapi-endpoint
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  namespace: assignment02
+  name: flaskserver-service
+  annotations:
+    service.beta.kubernetes.io/linode-loadbalancer-throttle: "4"
+  labels:
+    app: flaskserver
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: flaskserver
+  sessionAffinity: None

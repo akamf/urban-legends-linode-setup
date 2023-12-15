@@ -23,7 +23,7 @@ spec:
               value: production
           envFrom:
             - configMapRef:
-                name: mysql-config
+                name: goapi-config
           ports:
             - containerPort: 8080
 ---
@@ -37,7 +37,7 @@ metadata:
   labels:
     app: goapi
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - name: http
     port: 8080

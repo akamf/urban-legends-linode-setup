@@ -1,6 +1,8 @@
-# Non-version controlled yaml-files
-Assignment02-kubeconfig.yaml
-mongodb-config.yaml
+# Config files that contains secrets
+*config.yaml
+
+# Local databases
+dump/
 
 # Executables
 *.exe
