@@ -31,6 +31,8 @@ spec:
                 configMapKeyRef:
                   name: flask-production-config # Change this to flask-development-config in development env
                   key: pythonapi-endpoint
+      imagePullSecrets:
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service
